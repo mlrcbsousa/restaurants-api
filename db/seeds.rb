@@ -6,31 +6,36 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.destroy_all
-Restaurant.destroy_all
+puts 'deleting data...'
 Comment.destroy_all
+puts 'deleted comments'
+Restaurant.destroy_all
+puts 'deleted restaurants'
+User.destroy_all
+puts 'deleted users'
 
-10.times do
-  User.create(
-    email: Faker::Internet.email,
-    password: 'password'
-  )
-end
+puts 'creating users...'
+10.times { User.create(email: Faker::Internet.email, password: 'password') }
+puts "created #{User.count} users"
 
+puts 'creating restaurants...'
 User.all.each do |user|
-  rand(3).times do
+  rand(1..2).times do
     user.restaurants.create(
       name: Faker::Hipster.word,
       address: Faker::Address.street_address
     )
   end
 end
+puts "created #{Restaurant.count} restaurants"
 
+puts 'creating comments...'
 Restaurant.all.each do |restaurant|
-  rand(3).times do
+  rand(1..3).times do
     restaurant.comments.create(
-      content: Faker::RickAndMorty.quote,
+      content: Faker::TheITCrowd.quote,
       user: User.all.sample
     )
   end
 end
+puts "created #{Comment.count} comments"
